@@ -376,6 +376,10 @@ RUN apk add --no-cache netcat-openbsd
 ENTRYPOINT [ "nc" ]
 ```
 
+`Question`
+
+- What `ENTRYPOINT` is used for ?
+
 ### Build the image
 
 `Action`
