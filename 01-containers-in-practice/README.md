@@ -319,6 +319,18 @@ The complete list of storage drivers can found here: https://docs.docker.com/sto
 
 By default, ports exposed by a container are only accessible by containers from the same network. To open ports at the Host level, you need to publish them: https://docs.docker.com/config/containers/container-networking/
 
+Test if your `HTTP` port is open from the outside world using:
+
+```console
+curl ifconfig.co/port/80
+```
+
+`Question`
+
+- What is the result of the test ?
+
+`Action`
+
 Let's destroy the `httpd` container:
 
 ```console
