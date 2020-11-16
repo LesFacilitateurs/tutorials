@@ -43,7 +43,7 @@ In this section, you will explore your environment with a set of commands to kno
 5. `cat /etc/issue`
 6. `date`
 7. `uptime`
-8. `cpu`
+8. `lscpu`
 9. `free -m`
 10. `df -h`
 11. `mount`
@@ -211,7 +211,7 @@ cat /proc/<PID>/environ
 Now execute `env` command inside the container by running:
 
 ```console
-docker exec -it httpd env
+docker exec httpd env
 ```
 
 `Question`
@@ -227,7 +227,7 @@ cat /proc/<PID>/net/route
 whith:
 
 ```console
-docker exec -it httpd route
+docker exec httpd route
 ```
 
 > Hint: to convert hex to decimal you can use `echo $((16#11))` which will convert hex 11 to decimal for example.
