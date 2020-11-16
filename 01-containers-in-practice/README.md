@@ -339,6 +339,86 @@ http://<public ip>/
 
 If you see **It works** that means that it works.
 
-## Docker Images
+## Docker Images (~30 minutes)
 
-In this part of the tutorial, you will build a Docker image 
+`Discover`
+
+In this part of the tutorial, you will build a Docker image using the Netcat tool (https://nc110.sourceforge.io/)
+
+### Dockerfile
+
+`Discover`
+
+To create a Docker image you need to create a `Dockerfile` which is basically a text file that contains a set of instructions that the Docker doemon will execute to create a filesystem known as `image`.
+
+Refer to the following links to answer the questions:
+
+- https://docs.docker.com/engine/reference/builder/
+- https://docs.docker.com/storage/storagedriver/
+
+`Question`
+
+- What is the role of the `FROM` instruction ?
+- What is an image layer ?
+- What is the difference between a container layer and an image layer ?
+- Is there any alternatives for Docker doemon to build a Docker image ?
+
+`Action`
+
+Create a file named `Dockerfile` with the following content:
+
+```console
+FROM alpine:latest
+LABEL description "Simple netcat image"
+
+RUN apk add --no-cache netcat-openbsd
+
+ENTRYPOINT [ "nc" ]
+```
+
+### Build the image
+
+`Action`
+
+Build a Docker image by specifying the **tag** `netcat:latest` and the **file** `Dockerfile`
+
+> Hint: Refer to the `docker build` documentation to find the correct syntax: https://docs.docker.com/engine/reference/commandline/build/
+
+`Question`
+
+- How many layers your `netcat:latest` image contains ? Explain why ?
+
+### Run the container
+
+`Action`
+
+In your current terminal, start a netcat server container in an interactive mode:
+
+```console
+docker run --name nc-server -it netcat -l 8000
+```
+
+In a second terminal, retrieve the IP address of nc-server using:
+
+```console
+docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' nc-server
+```
+
+Then, start a netcat client container in an interactive mode:
+
+```console
+docker run -it netcat <nc-server ip> 8000
+```
+
+Start typing some text and see it printed on the server side when you hit enter.
+
+To remove both containers, start a third terminal an run:
+
+```console
+docker rm -f nc-server nc-client
+```
+
+`Question`
+
+- Why nc-client was able to connect to nc-server ?
+
