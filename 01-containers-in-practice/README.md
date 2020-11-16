@@ -49,7 +49,7 @@ In this section, you will explore your environment with a set of commands to kno
 11. `mount`
 12. `ip a`
 13. `ip r`
-14. `curl http://ip-api.com/json/<public_ip> | jq` # You may need to install `jq`
+14. `curl ifconfig.co/json | jq` # You may need to install `jq`
 
 Use `man` to lean about those commands.
 
