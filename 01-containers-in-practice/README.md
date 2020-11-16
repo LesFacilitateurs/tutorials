@@ -1,4 +1,4 @@
-# TP 1: Linux Containers in Practice
+# TP 1: Linux Containers in Practice: a Docker flavor
 
 - **Related course module**: IR.3504 - Convergent Services and Technologies
 - **Tutorial scope**: OS Level Virtualization & Containers
@@ -20,7 +20,7 @@ During this tutorial, we will learn few things like:
 These prerequisites only concern you if you will use a Virtual Machine (VM) on a public cloud to execute the different steps. For that, you need to have:
 
 - an **ssh client** already configured on you desktop
-- pick an **account** from the accounts csv file containing: VM's IP address and credentials needed for connecting
+- pick an **account** from the accounts csv file containing: VM's public IP address and credentials needed for connecting
 
 ## Before you start
 
@@ -49,6 +49,7 @@ In this section, you will explore your environment with a set of commands to kno
 11. `mount`
 12. `ip a`
 13. `ip r`
+14. `curl http://ip-api.com/json/<public_ip> | jq` # You may need to install `jq`
 
 Use `man` to lean about those commands.
 
@@ -132,7 +133,7 @@ docker --help
 - What is the command that can let you download a container image ?
 
 
-## What is a container ? (~40 minutes)
+## What is a container ? (~45 minutes)
 
 A container is simply another process on your system with some specific configurations that are applied to make sure that:
 - the containerized process is **isolated** from the rest of the system
@@ -150,13 +151,25 @@ To see this in practice we will use a simple web server container using `httpd`.
 ps -aef |grep httpd
 ```
 
-Then run:
+Now you need to pull the image from the public Docker Hub repository:
+
+```console
+docker image pull httpd:alpine
+```
+
+List the local docker images:
+
+```console
+docker image ls
+```
+
+To run the docker container:
 
 ```console
 docker run --name httpd -d -e INSTITUTION=isep httpd:alpine
 ```
 
-> Note: INSTITUTION=isep environment variable is just a dummy variable that has nothing to do with httpd but serves the purpose of this TP later on. You can modify it if you want !
+> Note: `INSTITUTION` environment variable is just a dummy variable that has nothing to do with httpd but serves the purpose of this TP later on. You can modify it if you want !
 
 `Question`
 
@@ -273,9 +286,59 @@ cat /proc/<PID>/status
 
 > Hint: to decode a specific capabilities set you can use: `capsh --decode=<hex value>`
 
-## Docker Containers
+### Linux Kernel
 
-### Create a Docker container
+`Action` + `Question`
 
-### Create a Docker image
+- What is the Linux kernel's version of the `httpd` container ?
+- What can you say about it ?
 
+### Inspecting a container
+
+`Action` + `Question`
+
+Run the following command:
+
+```console
+docker container inspect httpd
+```
+
+- What is the Hostname of the container ?
+- What is the IP address of the container ?
+- Does the container open any ports ? If yes, which ones ?
+- What storage driver the containers uses ?
+
+`Discover`
+
+The complete list of storage drivers can found here: https://docs.docker.com/storage/storagedriver/select-storage-driver/
+
+
+### Publishing ports
+
+`Discover` + `Action`
+
+By default, ports exposed by a container are only accessible by containers from the same network. To open ports at the Host level, you need to publish them: https://docs.docker.com/config/containers/container-networking/
+
+Let's destroy the `httpd` container:
+
+```console
+docker rm -f httpd
+```
+
+and create a new one that publishes the port 80:
+
+```console
+docker run --name httpd -d -p 80:80 httpd:alpine
+```
+
+Verify that your container is now reachable from the outside world by opening your favorite internet browser and going to the following address:
+
+```console
+http://<public ip>/
+```
+
+If you see **It works** that means that it works.
+
+## Docker Images
+
+In this part of the tutorial, you will build a Docker image 
