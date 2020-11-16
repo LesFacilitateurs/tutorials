@@ -10,15 +10,11 @@ services:
     ports:
       - "8000:8000"
     networks:
-      private-net:
-        aliases:
-          - nc-server
+      - private-net
 
   nc-client:
     build: .
     entrypoint: sleep 300
     networks:
-       private-net:
-         aliases:
-           - nc-server
+      - private-net
 
