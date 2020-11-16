@@ -422,3 +422,74 @@ docker rm -f nc-server nc-client
 
 - Why nc-client was able to connect to nc-server ?
 
+## Docker Compose (~20 minutes)
+
+`Action` + `Question`
+
+Print docker-compose help and answer the following questions:
+
+- Which command can be used to run a service ?
+- Which command can be used to teardown a service ?
+
+`Action`
+
+Create a `docker-compose.yml` file with the following content:
+
+```console
+version: "3.8"
+ 
+ networks:
+   private-net:
+ 
+ services:
+   nc-server:
+     build: .
+     entrypoint: sleep 60
+     networks:
+       - private-net
+ 
+   nc-client:
+     build: .
+     entrypoint: sleep 60
+     networks:
+        - private-net
+```
+
+`Question`
+
+- What does this file contain ?
+- What part of the default image is overriden ?
+
+`Action`
+
+Build all images of the compose file:
+
+```console
+docker-compose build
+```
+
+Run the stack:
+
+```console
+docker-compose up
+```
+
+`Question`
+
+- What are the containers that are created by this compose file in the running containers' list ?
+
+`Action`
+
+In two different terminals, execute a server inside nc-server and a client inside nc-client to redo the test and verify that it works.
+
+> Note: Adapt the sleep timer to suit your needs.
+
+`Action`
+
+Update the compose file to be able to connect to `nc-server` from a client that is not on the `private-net` network
+
+## Go further
+
+Docker can also be used as a lightwight container orchestration system using the Docker Swarm project: https://docs.docker.com/engine/swarm/
+
+This orchestration system is currently beeing superseded by other projects like kubernetes.

@@ -1,0 +1,24 @@
+version: "3.8"
+
+networks:
+  private-net:
+
+services:
+  nc-server:
+    build: .
+    entrypoint: sleep 300
+    ports:
+      - "8000:8000"
+    networks:
+      private-net:
+        aliases:
+          - nc-server
+
+  nc-client:
+    build: .
+    entrypoint: sleep 300
+    networks:
+       private-net:
+         aliases:
+           - nc-server
+
