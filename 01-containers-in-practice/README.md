@@ -453,22 +453,22 @@ Create a `docker-compose.yml` file with the following content:
 
 ```console
 version: "3.8"
- 
- networks:
-   private-net:
- 
- services:
-   nc-server:
-     build: .
-     entrypoint: sleep 60
-     networks:
-       - private-net
- 
-   nc-client:
-     build: .
-     entrypoint: sleep 60
-     networks:
-        - private-net
+
+networks:
+  private-net:
+
+services:
+  nc-server:
+    build: .
+    entrypoint: sleep 60
+    networks:
+      - private-net
+
+  nc-client:
+    build: .
+    entrypoint: sleep 60
+    networks:
+      - private-net
 ```
 
 `Question`
