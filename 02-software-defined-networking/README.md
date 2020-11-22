@@ -6,10 +6,9 @@
 
 During this tutorial, we will learn few things like:
 - Linux Virtual Networking Devices
-- OVS and Linux bridge Software switches
-- Observing OpenFlow (OF) protocol & switch
-- Emulating a whole network with mininet
-- Testing ODL SDN controller
+- Virtual Network Infrastructure
+- OpenFlow & Mininet network emulator
+- A taste of ODL SDN controller
 
 > In the following, you will see `Discover` if you should play around
 > and see the documentation or test. You will see `Action` if you should
@@ -41,7 +40,7 @@ ip route
 
 **ip** is a powerful tool to show and manipulate routing, network devices, interfaces and tunnels. In the following we will test new **ip** objects and commands.
 
-### TAP/TUN virtual devices
+### TUN/TAP virtual devices
 
 `Discover`
 
@@ -53,6 +52,28 @@ ip route
 - What is the difference between *tap* and *tun* devices ?
 
 The following **ip** commands will help you create *tun* and *tap* devices.
+
+`Action`
+
+First, create a TUN device with the name: **tun0**
+
+```console
+ip tuntap add tun0 mode tun
+```
+
+Verify that the command was executed correctly:
+
+```console
+ip link show tun0
+ip link show type tun # (alternative 1)
+ip addr # (alternative 2)
+```
+
+`Question`
+
+- Does **tun0** have a MAC (Media Access Control) address ? Explain why ?
+
+In the same way, create a TAP device and verify that is was correctly created.
 
 `Action`
 
@@ -73,12 +94,32 @@ ip addr # (alternative 2)
 `Question`
 
 - Does **tap0** have a MAC (Media Access Control) address ? Explain why ?
+- What is the status of **tap0** interface ? Explain why ?
 
-In the same way, create a TUN device with the name: **tun0** and verify that is was correctly created.
+Let's create an application (with a basic configuration that serves the goal of this tutorial) that actually will use **tap0**. First, you need to download [Tiny Core Linux](http://tinycorelinux.net/) which is one of smallest Linux OS distributions.
+
+`Action`
+
+Start by downloading the *Core* version of **Tiny Core** which is only 15MB in size.
+
+```console
+wget http://tinycorelinux.net/11.x/x86/release/Core-current.iso
+```
+
+The application you are going to create is a Virtual Machine (VM) that will be created using QEMU/KVM. **tap0** will be provided to QEMU to setup the virtual network interface of the VM.
+
+```console
+qemu-system-i386 -boot d \
+    -netdev tap,id=net0,ifname=tap0,script=no,downscript=no \
+    -device virtio-net,netdev=net0 \
+    -cdrom Core-current.iso
+```
+
+In a seprate terminal, verify the state of **tap0**
 
 `Question`
 
-- Does **tun0** have a MAC (Media Access Control) address ? Explain why ?
+- What do you notice ?
 
 ### VETH virtual devices
 
@@ -226,7 +267,7 @@ E.g. of commands:
 
 `Action`
 
-Now let's add IP address `10.100.100.1` to *tap-red* and `10.100.100.2` to *tap-green*:
+Now let's add IP address `10.100.100.1/31` to *tap-red* and `10.100.100.2/31` to *tap-green*:
 
 ```console
 ip netns exec <netns-name> ip addr add <ip-address> dev <tap-name>
@@ -269,3 +310,133 @@ ip netns del <netns-name>
 This 2nd setup is illustrated by the following figure:
 
 <p align="center"><img src="static/root-netns-and-veths.png" alt="Root network namespace and veth pair"></p>
+
+`Action`
+
+- Create a *veth* pair with peer names: *tap0* and *tap1*
+- Create a network namespace named: *netns-1*
+- Move *tap1* to *netns-1*
+- Configure *tap0* with IP@: `192.168.100.100/31`
+- Configure *tap1* with IP@: `192.168.100.101/31`
+- Bring both *tap0* and *tap1* UP
+- Start a tshark on *tap0*
+- From *netns-1*, ping *tap0* IP@ and make sure that you get echo replies
+
+### Create a virtual sub-network using **Linux bridge**
+
+Using *veth* pairs, we can only establish point-to-point connections between network containers. Multiple network namespaces can be interconnected to create a complete sub-network using a *bridge*. In the following, you will see how this could be done using 3 network namespaces, 3 *veth* pairs, and a *bridge*. This is illustrated in the following figure:
+
+<p align="center"><img src="static/netns-veths-and-bridge.png" alt="Network namespace, veth pairs and linux bridge"></p>
+
+`Action`
+
+Use the provided script `subnet-with-linux-bridge.sh` to create the infrastructure:
+
+A sample output:
+
+```console
+./subnet-with-linux-bridge.sh create
+dim. 22 nov. 2020 16:38:41 CET | INFO | create bridge with name br0
+dim. 22 nov. 2020 16:38:41 CET | INFO | fire up br0
+dim. 22 nov. 2020 16:38:41 CET | INFO | create netns netns-1
+dim. 22 nov. 2020 16:38:41 CET | INFO | create veth pairs for netns number 1
+dim. 22 nov. 2020 16:38:41 CET | INFO | move tap-ns-1 to netns-1
+dim. 22 nov. 2020 16:38:41 CET | INFO | attach tap-br-1 to br0
+dim. 22 nov. 2020 16:38:41 CET | INFO | add 10.200.200.1/24 ip address to tap-ns-1
+dim. 22 nov. 2020 16:38:41 CET | INFO | bring up tap-br-1
+dim. 22 nov. 2020 16:38:41 CET | INFO | bring up tap-ns-1
+dim. 22 nov. 2020 16:38:41 CET | INFO | create netns netns-2
+dim. 22 nov. 2020 16:38:41 CET | INFO | create veth pairs for netns number 2
+dim. 22 nov. 2020 16:38:41 CET | INFO | move tap-ns-2 to netns-2
+dim. 22 nov. 2020 16:38:41 CET | INFO | attach tap-br-2 to br0
+dim. 22 nov. 2020 16:38:41 CET | INFO | add 10.200.200.2/24 ip address to tap-ns-2
+dim. 22 nov. 2020 16:38:41 CET | INFO | bring up tap-br-2
+dim. 22 nov. 2020 16:38:41 CET | INFO | bring up tap-ns-2
+dim. 22 nov. 2020 16:38:41 CET | INFO | create netns netns-3
+dim. 22 nov. 2020 16:38:41 CET | INFO | create veth pairs for netns number 3
+dim. 22 nov. 2020 16:38:41 CET | INFO | move tap-ns-3 to netns-3
+dim. 22 nov. 2020 16:38:41 CET | INFO | attach tap-br-3 to br0
+dim. 22 nov. 2020 16:38:41 CET | INFO | add 10.200.200.3/24 ip address to tap-ns-3
+dim. 22 nov. 2020 16:38:41 CET | INFO | bring up tap-br-3
+dim. 22 nov. 2020 16:38:41 CET | INFO | bring up tap-ns-3
+dim. 22 nov. 2020 16:38:41 CET | INFO | done
+```
+
+`Discover`
+
+Prior to **ip** and **bridge** (not used in this TP), linux bridge manipulation was done through **brctl**. It is used in the following for the sake of habit and simplicity.
+
+```console
+man brctl
+man bridge
+man ip
+```
+
+> Note: virtual and physical network interfaces attached to a linux bridge are simply considered as ports: think ports of a layer 2 switch !
+
+`Action`
+
+- Start a tshark on br0 to listen to ICMP packets
+- Ping a *netns-x* from a *netns-y* where x,y are in [1,2,3]
+- List network interfaces attached to *br0* using `brctl`
+- Inspect the learned MAC addresses on *br0* using `brctl`
+- Inspect the leaned MAC addresses on each *netns* using `arp -n`
+
+> Note: ping *netns-x* from *netns-x* doesn't work because the loopback interface "lo" is down !
+
+Once you finish, wipe everything out using:
+
+```console
+./subnet-with-linux-bridge.sh delete
+```
+
+### Create a virtual sub-network using **Open vSwitch** virtual switch
+
+In the following we will re-create the same configuration but using Open vSwitch (OVS) software switch. The configuration is depicted in the following figure:
+
+<p align="center"><img src="static/netns-and-ovs-bridge.png" alt="Network namespace, veth pairs and linux bridge"></p>
+
+`Discover`
+
+- https://docs.openvswitch.org/en/latest/intro/what-is-ovs/
+
+`Question`
+
+- What are the main components of OVS ?
+- What is the role of these two components: *ovs-vswitchd* and *ovsdb-server* ?
+
+`Action`
+
+Let's start by installing OVS:
+
+```console
+apt-get update && apt-get install -y openvswitch-switch
+```
+
+Verify that *ovs-vswitchd* and *ovsdb-server* are up and running on your system:
+
+```console
+ps aux |grep ovs
+/lib/systemd/system/openvswitch-switch.service (alternative)
+```
+
+`Action` + `Question`
+
+- Use the provided bash script `subnet-with-openvswitch.sh` to create the infrastructure
+- Start a *tshark* or a *tcpdump* on br0 to listen to ICMP packets
+- Ping a *netns-x* from a *netns-y* where x,y are in [1,2,3] (What do you notice ?)
+- Use *ovs-tcpdump* instead of *tshark* to listen to ICMP packets one of the 3 ports and redo the previous step
+- List ports attached to *br0* using `ovs-vsctl`
+- List network devices using `ip link show` (What do you notice ?)
+
+> Note: when you create your first OVS bridge, a bridge named `ovs-system` is automatically created. The explanation of what it is and what it does can be found here: https://mail.openvswitch.org/pipermail/ovs-discuss/2013-October/031532.html
+
+`Question`
+
+- Which command is used to add an OVS port to an OVS bridge ?
+
+Once you finish, wipe everything out using:
+
+```console
+./subnet-with-openvswitch.sh delete
+```
