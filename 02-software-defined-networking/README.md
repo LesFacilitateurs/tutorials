@@ -2,7 +2,7 @@
  
 - **Related course module**: IR.3504 - Convergent Services and Technologies
 - **Tutorial scope**: Software Defined Networking
-- **Technologies**: Linux, Open vSwitch (OVS), Mininet, OpenDayLight (ODL)
+- **Technologies**: Linux, Open vSwitch (OVS), Mininet, Open Network Operating System (ONOS)
 
 During this tutorial, we will learn few things like:
 - Linux Virtual Networking Devices
