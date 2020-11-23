@@ -7,8 +7,7 @@
 During this tutorial, we will learn few things like:
 - Linux Virtual Networking Devices
 - Virtual Network Infrastructure
-- OpenFlow & Mininet network emulator
-- A taste of ODL SDN controller
+- Testing a Simple SDN Infrastructure
 
 > In the following, you will see `Discover` if you should play around
 > and see the documentation or test. You will see `Action` if you should
@@ -399,6 +398,7 @@ In the following we will re-create the same configuration but using Open vSwitch
 `Discover`
 
 - https://docs.openvswitch.org/en/latest/intro/what-is-ovs/
+- https://docs.openvswitch.org/en/latest/faq/openflow/
 
 `Question`
 
@@ -420,6 +420,10 @@ ps aux |grep ovs
 /lib/systemd/system/openvswitch-switch.service (alternative)
 ```
 
+`Question`
+
+- Which OpenFlow version/s are supported by your OVS virtual switch ?
+
 `Action` + `Question`
 
 - Use the provided bash script `subnet-with-openvswitch.sh` to create the infrastructure
@@ -440,3 +444,168 @@ Once you finish, wipe everything out using:
 ```console
 ./subnet-with-openvswitch.sh delete
 ```
+
+## Testing a Simple SDN Infrastructure (~45 minutes)
+
+In this section, we are going to setup a basic SDN infrastructure/lab using **Mininet** network emulator and **Open Network Operating System (ONOS)** SDN controller.
+
+`Discover`
+
+- http://mininet.org/
+- http://mininet.org/overview/
+- https://github.com/mininet/mininet
+- https://wiki.onosproject.org/display/ONOS/System+Components
+- https://wiki.onosproject.org/display/ONOS/Requirements
+- https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml
+
+`Question`
+
+- In which language mininet is written ?
+- What does mininet use to create virtual hosts, switches and links ?
+- What is a Provider in ONOS ?
+- Which port is used by OpenFlow ?
+
+### Mininet Setup
+
+`Action`
+
+Install *mininet* on you system using:
+
+```console
+apt-get update && apt-get install -y mininet
+```
+
+`Question`
+
+Using the help of the *mininet* CLI:
+
+- What are the supported software switches ? ans which is the default one ?
+
+`Action`
+
+Run a fist test of mininet:
+
+```console
+mn --test pingall
+```
+
+`Question`
+
+- What this test is doing ?
+
+### ONOS Setup
+
+`Action`
+
+Install Docker Engine in your system using: https://docs.docker.com/engine/install/ubuntu/#installation-methods
+
+Launch ONOS docker container using:
+
+```console
+docker run --it --rm \
+    -name onos-sdn-controller \
+    -p 6653:6653 \
+    -p 6640:6640 \
+    -p 8181:8181 \
+    -p 8101:8101 \
+    onosproject/onos
+```
+
+`Question`
+
+- What is the protocol or application running on each of those ports ?
+
+This is a sample output log of ONOS startup:
+
+```console
+...
+14:56:46.559 INFO  [FlowRuleManager] Configured. FallbackFlowPollFrequency is 30 seconds
+14:56:46.568 INFO  [NeighbourResolutionManager] IPv6 neighbor discovery is disabled
+14:56:46.568 INFO  [NeighbourResolutionManager] Address resolution protocol is enabled
+14:56:46.569 INFO  [NeighbourResolutionManager] Configured. Request intercepts is enabled
+14:56:46.613 INFO  [GroupManager] Configured. PurgeOnDisconnection is disabled
+14:56:46.617 INFO  [HostManager] Configured. monitorHosts disabled
+14:56:46.618 INFO  [HostManager] Configured. probeRate 30000
+14:56:46.618 INFO  [HostManager] Removal of duplicate ip address is disabled
+14:56:46.619 INFO  [HostManager] Configured. greedyLearningIpv6 disabled
+14:56:46.619 INFO  [HostManager] Configured. hostMoveTrackerEnabled disabled
+14:56:46.629 INFO  [MeterManager] Configured. PurgeOnDisconnection is disabled
+14:56:48.203 INFO  [AtomixClusterStore] Updated node 172.17.0.2 state to READY
+```
+
+You need to do some additional configuration using ONOS CLI which is accessible via SSH on port 8101 (password: karaf):
+
+```console
+ssh -p 8101 -o StrictHostKeyChecking=no karaf@localhost
+```
+
+Once you login, execute the following ONOS command:
+
+```console
+app activate org.onosproject.openflow-base \
+    org.onosproject.lldpprovider \
+    org.onosproject.hostprovider \
+    org.onosproject.drivers \
+    org.onosproject.openflow \
+    org.onosproject.proxyarp \
+    org.onosproject.fwd
+```
+
+Finally, navigate to `http://<public-ip>:8181/onos/ui` and login using the same credentials: karaf/karaf
+
+> Note: Press the **H** key on your keyboard to activate/deactivare hosts visibility in the network topology.
+
+### Network topologies
+
+Mininet allows creating multiple network topologies. Let's start by a simple one:
+
+```console
+mn --controller=remote --topo=minimal --switch default,protocols=OpenFlow14
+```
+
+Once the topology is created, allow your infrastructure switches learn about the available hosts, simply by letting them ping each other:
+
+```console
+mininet> pingall
+```
+
+Observe the topology on ONOS web UI.
+
+`Action`
+
+Execute the following steps to answer the question that follows:
+
+- Stop any running mininet topology
+- Use tshark to listen on the OpenFlow port 
+- Launch a mininet topology of your choice (minimal may be a good choice)
+
+`Question`
+
+- What transport protocol is used by OpenFlow ?
+- Is it the switch or the controller that initiated the session ?
+- What is the first OpenFlow message ?
+
+`Discover`
+
+Mininet can be used to create more advances topologies. Test some of them and see their visual representation on the web UI.
+
+`Discover` + `Action`
+
+- Refer to http://mininet.org/walkthrough/#custom-topologies to learn how to create a custom topology.
+- Create a python file containing the topology depicted by the following figure (put the content of this file in your report)
+- Test your topology with mininet
+
+<p align="center"><img src="static/mininet-topo.png" alt="Custom mininet topology"></p>
+
+
+### ONOS REST API
+
+ONOS provides a REST API to manage the network infrastructure. The documentation of this API is provided in OpenAPI standard an can be found here: `http://<public-ip>:8181/onos/v1/docs/`
+
+`Action`
+
+- Use the API to get the network topology in two ways
+    - using the OpenAPI web UI
+    - using *cURL* in combination with `jq`
+
+## EOF
