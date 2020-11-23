@@ -19,8 +19,10 @@ During this tutorial, we will learn few things like:
 
 These prerequisites only concern you if you will use a Virtual Machine (VM) on a public cloud to execute the different steps. For that, you need to have:
 
-- an **ssh client** already configured on you desktop
+- an **ssh client** already configured on you desktop (I recommend using [mobaxterm](https://mobaxterm.mobatek.net/download.html) for windows users)
 - pick an **account** from the accounts csv file containing: VM's public IP address and credentials needed for connecting
+
+> Note: you need to **enables X11 forwarding** on you ssh session (will be needed for the 1st part of the TP)
 
 ## Before you start
 
@@ -58,6 +60,7 @@ First, create a TUN device with the name: **tun0**
 
 ```console
 ip tuntap add tun0 mode tun
+ip link set dev tun0 up
 ```
 
 Verify that the command was executed correctly:
@@ -80,6 +83,7 @@ First, create a TAP device with the name: **tap0**
 
 ```console
 ip tuntap add tap0 mode tap
+ip link set dev tap0 up
 ```
 
 Verify that the command was executed correctly:
@@ -90,7 +94,7 @@ ip link show type tun # (alternative 1)
 ip addr # (alternative 2)
 ```
 
-`Question`
+`Discover` + `Question`
 
 - Does **tap0** have a MAC (Media Access Control) address ? Explain why ?
 - What is the status of **tap0** interface ? Explain why ?
@@ -107,6 +111,14 @@ wget http://tinycorelinux.net/11.x/x86/release/Core-current.iso
 
 The application you are going to create is a Virtual Machine (VM) that will be created using QEMU/KVM. **tap0** will be provided to QEMU to setup the virtual network interface of the VM.
 
+But first, you need to install *qemu-kvm* on you system:
+
+```console
+apt-get update && apt-get install qemu-kvm
+```
+
+Then fire up the VM:
+
 ```console
 qemu-system-i386 -boot d \
     -netdev tap,id=net0,ifname=tap0,script=no,downscript=no \
@@ -119,6 +131,10 @@ In a seprate terminal, verify the state of **tap0**
 `Question`
 
 - What do you notice ?
+
+`Action`
+
+Close the VM interface and re-verify the state of **tap0**
 
 ### VETH virtual devices
 
@@ -502,14 +518,16 @@ Install Docker Engine in your system using: https://docs.docker.com/engine/insta
 Launch ONOS docker container using:
 
 ```console
-docker run --it --rm \
-    -name onos-sdn-controller \
+docker run -it --rm \
+    --name onos-sdn-controller \
     -p 6653:6653 \
     -p 6640:6640 \
     -p 8181:8181 \
     -p 8101:8101 \
     onosproject/onos
 ```
+
+> Note: execute the following steps in a second terminal
 
 `Question`
 
