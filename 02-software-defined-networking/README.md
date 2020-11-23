@@ -101,6 +101,8 @@ ip addr # (alternative 2)
 
 Let's create an application (with a basic configuration that serves the goal of this tutorial) that actually will use **tap0**. First, you need to download [Tiny Core Linux](http://tinycorelinux.net/) which is one of smallest Linux OS distributions.
 
+> Note: Enable X11 forwarding on your SSH session using: `ssh -X username@ip`. For windows users, it is activated by default in mobaxterm.
+
 `Action`
 
 Start by downloading the *Core* version of **Tiny Core** which is only 15MB in size.
