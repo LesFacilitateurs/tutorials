@@ -461,6 +461,10 @@ Once you finish, wipe everything out using:
 ./subnet-with-openvswitch.sh delete
 ```
 
+`Discover`
+
+OpenStack uses Linux bridge and OVS to setup networking on compute nodes at a large scale: https://docs.openstack.org/neutron/victoria/contributor/internals/openvswitch_agent.html
+
 ## Testing a Simple SDN Infrastructure (~45 minutes)
 
 In this section, we are going to setup a basic SDN infrastructure/lab using **Mininet** network emulator and **Open Network Operating System (ONOS)** SDN controller.
