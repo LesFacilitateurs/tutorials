@@ -284,7 +284,7 @@ E.g. of commands:
 
 `Action`
 
-Now let's add IP address `10.100.100.1/31` to *tap-red* and `10.100.100.2/31` to *tap-green*:
+Now let's add IP address `10.100.100.1/30` to *tap-red* and `10.100.100.2/30` to *tap-green*:
 
 ```console
 ip netns exec <netns-name> ip addr add <ip-address> dev <tap-name>
@@ -333,8 +333,8 @@ This 2nd setup is illustrated by the following figure:
 - Create a *veth* pair with peer names: *tap0* and *tap1*
 - Create a network namespace named: *netns-1*
 - Move *tap1* to *netns-1*
-- Configure *tap0* with IP@: `192.168.100.100/31`
-- Configure *tap1* with IP@: `192.168.100.101/31`
+- Configure *tap0* with IP@: `192.168.100.100/30`
+- Configure *tap1* with IP@: `192.168.100.101/30`
 - Bring both *tap0* and *tap1* UP
 - Start a tshark on *tap0*
 - From *netns-1*, ping *tap0* IP@ and make sure that you get echo replies
