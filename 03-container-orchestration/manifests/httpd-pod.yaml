@@ -1,0 +1,19 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-httpd-pod
+  namespace: my-httpd-namespace
+spec:
+  containers:
+    - name: my-httpd-container
+      image: httpd:alpine
+      ports:
+        - containerPort: 80
+      resources:
+        limits:
+          memory: "100Mi"
+          cpu: "0.5"
+        requests:
+          memory: "50Mi"
+          cpu: "0.2"

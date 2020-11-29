@@ -1,0 +1,35 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: my-httpd-namespace
+
+---
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: my-httpd-replicaset
+  namespace: my-httpd-namespace
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      my-pod-label: httpd-pod
+  template:
+    metadata:
+      namespace: my-httpd-namespace
+      labels:
+        my-pod-label: httpd-pod
+    spec:
+      containers:
+        - name: my-httpd-container
+          image: httpd:alpine
+          ports:
+            - containerPort: 80
+          resources:
+            limits:
+              memory: "100Mi"
+              cpu: "0.5"
+            requests:
+              memory: "50Mi"
+              cpu: "0.2"
