@@ -141,7 +141,7 @@ In the following, you will create a ReplicaSet and a Deployment to manage the li
 
 - On your first terminal, create a ReplicaSet using the httpd replicaset manifest file located [here](manifests/httpd-replicaset.yaml)
 - Observe the state of your pods and replicasets in your *monitoring* terminal
-- Kill one of the *httpd replicaset pods* using: `kubectl delete pod/my-http-replicaset-<abcde> --namespace my-httpd-namespace`
+- Kill one of the *httpd replicaset pods* using: `kubectl delete pod/my-httpd-replicaset-<abcde> --namespace my-httpd-namespace`
 - Observe again the state of your resources
 
 `Question`
@@ -150,7 +150,7 @@ In the following, you will create a ReplicaSet and a Deployment to manage the li
 
 `Action`
 
-- Now **scale up** your *httpd* workload to 5 replicas using: `kubectl scale replicaset.apps/my-http-replicaset --replicas 5 --namespace my-httpd-namespace` and observe the state of your resources
+- Now **scale up** your *httpd* workload to 5 replicas using: `kubectl scale replicaset.apps/my-httpd-replicaset --replicas 5 --namespace my-httpd-namespace` and observe the state of your resources
 - Then **scale down** your pod to only 2 replicas using the same command and observe the result
 
 `Question`
