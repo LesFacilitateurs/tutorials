@@ -15,6 +15,10 @@ During this tutorial, we will learn few things like:
 > and see the documentation or test. You will see `Action` if you should
 > run a command, write a program, or something similar. You will see `Question` when there is a question to provide an answer to.
 
+Voucher Link:
+
+<a href="https://www.digitalocean.com/?refcode=ef5a5f3726df&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge"><img src="https://web-platforms.sfo2.digitaloceanspaces.com/WWW/Badge%203.svg" alt="DigitalOcean Referral Badge" /></a>
+
 ## Prerequisites
 
 These prerequisites only concern you if you will use a Virtual Machine (VM) on a public cloud to execute the different steps. For that, you need to have:
