@@ -17,6 +17,10 @@ During this tutorial, we will learn how to:
 
 > Note: when you find something like `<something-to-be-replaced>` it means that this is a part of the command that needs to be updated.
 
+Voucher Link:
+
+<a href="https://www.digitalocean.com/?refcode=ef5a5f3726df&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge"><img src="https://web-platforms.sfo2.digitaloceanspaces.com/WWW/Badge%203.svg" alt="DigitalOcean Referral Badge" /></a>
+
 ## Prerequisites
 
 These prerequisites only concern you if you will use a Virtual Machine (VM) on a public cloud to execute the different steps. For that, you need to:
