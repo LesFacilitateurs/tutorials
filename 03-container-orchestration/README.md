@@ -1,6 +1,6 @@
 # TP 3: An Introduction to Container Management and Orchestration
 
-- **Related course module**: IR.3504 - Convergent Services and Technologies
+- **Related course module**: IR.3503 - Virtual Infrastructure
 - **Tutorial scope**: Linux Containers, Container Orchestration, Life Cycle Management
 - **Technologies**: Linux, Docker, Containerd, Runc, Kubernetes (k8s), k3s (lightweight kubernetes from Rancher)
 

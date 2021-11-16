@@ -1,6 +1,6 @@
 # TP 1: Linux Containers in Practice: a Docker flavor
 
-- **Related course module**: IR.3504 - Convergent Services and Technologies
+- **Related course module**: IR.3503 - Virtual Infrastructure
 - **Tutorial scope**: OS Level Virtualization & Containers
 - **Technologies**: Linux, Docker
 

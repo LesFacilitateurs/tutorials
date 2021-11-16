@@ -1,6 +1,6 @@
 # TP 2: An Introduction to Software Defined Networking (SDN)
  
-- **Related course module**: IR.3504 - Convergent Services and Technologies
+- **Related course module**: IR.3503 - Virtual Infrastructure
 - **Tutorial scope**: Software Defined Networking
 - **Technologies**: Linux, Open vSwitch (OVS), Mininet, Open Network Operating System (ONOS)
 
