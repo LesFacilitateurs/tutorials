@@ -337,8 +337,8 @@ This 2nd setup is illustrated by the following figure:
 - Create a *veth* pair with peer names: *tap0* and *tap1*
 - Create a network namespace named: *netns-1*
 - Move *tap1* to *netns-1*
-- Configure *tap0* with IP@: `192.168.100.100/30`
-- Configure *tap1* with IP@: `192.168.100.101/30`
+- Configure *tap0* with IP@: `192.168.100.100/24`
+- Configure *tap1* with IP@: `192.168.100.101/24`
 - Bring both *tap0* and *tap1* UP
 - Start a tshark on *tap0*
 - From *netns-1*, ping *tap0* IP@ and make sure that you get echo replies
@@ -449,10 +449,10 @@ ps aux |grep ovs
 `Action` + `Question`
 
 - Use the provided bash script `subnet-with-openvswitch.sh` to create the infrastructure
-- Start a *tshark* or a *tcpdump* on br0 to listen to ICMP packets
+- Start a *tshark* or a *tcpdump* on *switch1* to listen to ICMP packets
 - Ping a *netns-x* from a *netns-y* where x,y are in [1,2,3] (What do you notice ?)
 - Use *ovs-tcpdump* instead of *tshark* to listen to ICMP packets one of the 3 ports and redo the previous step
-- List ports attached to *br0* using `ovs-vsctl`
+- List ports attached to *switch1* using `ovs-vsctl`
 - List network devices using `ip link show` (What do you notice ?)
 
 > Note: when you create your first OVS bridge, a bridge named `ovs-system` is automatically created. The explanation of what it is and what it does can be found here: https://mail.openvswitch.org/pipermail/ovs-discuss/2013-October/031532.html
