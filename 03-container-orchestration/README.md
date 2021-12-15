@@ -224,7 +224,7 @@ The pod IP address is private and only reachable from within the cluster. To mak
 
 - Do the cURL test using the service Cluster IP and verify that is works
 - Update the manifest file to publish the service using *NodePort* type and verify using your browser
-- Update again the manifest file to use the External IPs this time
+- Update again the manifest file to use the LoadBalancer service type this time
 
 ## Go further
 
