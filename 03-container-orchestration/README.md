@@ -177,7 +177,7 @@ Now let's create a *Deployment* to manage the *httpd* pod.
 - Use the *httpd* deployment manifest file located [here](manifests/httpd-deployment.yaml) to create a *Deployment*
 - Update the *httpd* image version from `httpd:2.4.43-alpine` to `httpd:2.4.46-alpine` using: `kubectl edit deployment.v1.apps/my-httpd-deployment --namespace my-httpd-namespace`
 - Observe the resources of your cluster on your *monitoring* terminal
-- Update again the *httpd* image version from `httpd:2.4.46-alpine` to `httpd:2.4.50-alpine`
+- Update again the *httpd* image version from `httpd:2.4.46-alpine` to `httpd:2.4.150-alpine`
 - Observe again the state of your system
 - Go to the previous state by rolling back the deployment using: `kubectl rollout undo deployment.apps/my-httpd-deployment --namespace my-httpd-namespace`
 
