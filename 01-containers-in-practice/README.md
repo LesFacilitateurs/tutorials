@@ -109,7 +109,7 @@ Use the official documentation to install docker compose: https://docs.docker.co
 To verify if Docker Compose is correctly installed:
 
 ```console
-docker-compose --version
+docker compose version
 ```
 
 `Question`
@@ -485,13 +485,13 @@ services:
 Build all images of the compose file:
 
 ```console
-docker-compose build
+docker compose build
 ```
 
 Run the stack:
 
 ```console
-docker-compose up
+docker compose up
 ```
 
 `Question`
