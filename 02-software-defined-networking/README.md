@@ -137,6 +137,16 @@ qemu-system-i386 -boot d \
     -cdrom Core-current.iso
 ```
 
+To create the VM in `no graphic mode` you can use the `-nographic` additional argument:
+
+```console
+qemu-system-i386 -boot d \
+    -netdev tap,id=net0,ifname=tap0,script=no,downscript=no \
+    -device virtio-net,netdev=net0 \
+    -cdrom Core-current.iso \
+    -nographic
+```
+
 In a seprate terminal, verify the state of **tap0**
 
 `Question`
