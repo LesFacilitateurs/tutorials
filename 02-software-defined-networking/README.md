@@ -23,7 +23,8 @@ Voucher Link:
 
 These prerequisites only concern you if you will use a Virtual Machine (VM) on a public cloud to execute the different steps. For that, you need to have:
 
-- an **ssh client** already configured on you desktop (I recommend using [mobaxterm](https://mobaxterm.mobatek.net/download.html) for windows users)
+- Windows Users: an **ssh client** already configured on you desktop (I recommend using [mobaxterm](https://mobaxterm.mobatek.net/download.html) for windows users)
+- MAC Users: shell + [XQuartz](https://www.xquartz.org/)
 - pick an **account** from the accounts csv file containing: VM's public IP address and credentials needed for connecting
 
 > Note: you need to **enables X11 forwarding** on you ssh session (will be needed for the 1st part of the TP)
