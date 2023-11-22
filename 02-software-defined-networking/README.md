@@ -104,6 +104,10 @@ ip addr # (alternative 2)
 - Does **tap0** have a MAC (Media Access Control) address ? Explain why ?
 - What is the status of **tap0** interface ? Explain why ?
 
+### Optional section
+
+> Start optional section
+
 Let's create an application (with a basic configuration that serves the goal of this tutorial) that actually will use **tap0**. First, you need to download [Tiny Core Linux](http://tinycorelinux.net/) which is one of smallest Linux OS distributions.
 
 > Note: Enable X11 forwarding on your SSH session using: `ssh -X username@ip`. For windows users, it is activated by default in mobaxterm.
@@ -142,6 +146,8 @@ In a seprate terminal, verify the state of **tap0**
 `Action`
 
 Close the VM interface and re-verify the state of **tap0**
+
+> End optional section
 
 ### VETH virtual devices
 
