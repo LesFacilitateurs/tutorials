@@ -66,7 +66,7 @@ Use the provided docker-compose file to deploy the following components:
 
 Connect to the WebUI and verify that your 5GC is up and running.
 
-## Attch a UE, capture traffic, and analyze (~60 minutes)
+## Attach a UE, capture traffic, and analyze (~60 minutes)
 
 ### UE provisionning
 
