@@ -65,3 +65,17 @@ Use the provided docker-compose file to deploy the following components:
 ### WebUI
 
 Connect to the WebUI and verify that your 5GC is up and running.
+
+## Attch a UE, capture traffic, and analyze (~60 minutes)
+
+### UE provisionning
+
+Provision a UE in the 5G core network using the WebUI
+
+### Attachment procedure
+
+Start an attachment procedure of the UE to the gNB and core network
+
+### Analysis
+
+Capture the application logs and the registration procedure, and analyse the protocols in use
