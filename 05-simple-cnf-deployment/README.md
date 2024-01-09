@@ -4,18 +4,22 @@
   - **Tutorial scope**: 5G Mobile Technologies
   - **Technologies**: 5G, Linux
 
-Voucher Link:
-
-<a href="https://www.digitalocean.com/?refcode=ef5a5f3726df&utm_campaign=Referral_Invite&utm_medium=Referral_Program&utm_source=badge"><img src="https://web-platforms.sfo2.digitaloceanspaces.com/WWW/Badge%203.svg" alt="DigitalOcean Referral Badge" /></a>
-
-## Prerequisites
-
-These prerequisites only concern you if you will use a Virtual Machine (VM) on a public cloud to execute the different steps. For that, you need to have:
-
-  - an **ssh client** already configured on you desktop
-  - **credentials** for your VM
-
 ## Environment Setup (~1h)
+
+### VM deployment
+
+> Skip this step if you have an already created VM
+
+You need to create a VM using a Linux-based distribution of your choosing, e.g. debian, ubuntu, kali, etc.
+
+To create a VM you can use one of the following VMMs:
+
+  - VirtualBox: https://www.virtualbox.org/
+  - Vagrant + VirtualBox: https://www.vagrantup.com
+  - VMware Workstation Player: https://www.vmware.com/uk/products/workstation-player.html
+  - etc.
+
+## Kubernetes deployment (~30 minutes)
 
 ### Install a Kubernetes cluster
 
@@ -36,7 +40,7 @@ More information on how to setup a Kubnertes cluster for different purposes (lea
 
 After you finish deploying your cluster, deploy an `Nginx` sample application `Pod` and test it's reachability.
 
-## Performace Test Using iPerf3 (~2h)
+## Networking Test Using iPerf3 (~2h)
 
 The CNF we need to deploy is [iPerf3](https://github.com/esnet/iperf) which is a tool for active measurements of the maximum achievable bandwidth on IP networks.
 
@@ -49,7 +53,6 @@ Please refer to iPerf3 CLI documentation [here](https://manpages.ubuntu.com/manp
   - When is it preferred to use the background mode for the iPerf3 server ?
   - Which 3 transport protocols are tested using iPerf3 ?
   - How to set the maximum throughput for a given test ?
-
 
 ### Test Execution
 
