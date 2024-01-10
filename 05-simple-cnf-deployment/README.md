@@ -1,4 +1,4 @@
-# TP 5: Simple CNF Deployment
+# TP 5: Simple Networking Application Deployment
 
   - **Related course module**: IR.3503 - Virtual Infrastructure
   - **Tutorial scope**: 5G Mobile Technologies
