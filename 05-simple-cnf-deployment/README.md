@@ -29,6 +29,7 @@ There are multiple options to install a [Kubernetes](https://kubernetes.io/) clu
   - Minikube - https://minikube.sigs.k8s.io/docs/start/
   - Kind - https://kind.sigs.k8s.io/docs/user/quick-start/
   - Kubeadm - https://kubernetes.io/docs/reference/setup-tools/kubeadm/
+  - etc.
 
 More information on how to setup a Kubnertes cluster for different purposes (learning, testing, development, production, etc) can be found here: https://kubernetes.io/docs/setup/
 
